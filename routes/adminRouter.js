@@ -36,7 +36,9 @@ adminRouter.post("/admin/register", async (req, res) => {
             city: req.body.city
         });
         if(error){
-            return res.status(400).json(error.details[0].message);
+            return res.status(400).json({
+                message: error.details[0].message
+            });
         }
 
 
@@ -51,7 +53,9 @@ adminRouter.post("/admin/register", async (req, res) => {
           });
 
         if(adminExists){
-            return res.status(409).json("The username you entered already exist");
+            return res.status(409).json({
+                message:"The username you entered already exist"
+            });
         }
     } catch(error){
             console.log("Error while checking if user already exists")
@@ -74,7 +78,7 @@ adminRouter.post("/admin/register", async (req, res) => {
         })
     } catch(error){
         console.log(error)
-        return res.status(500).json(error)
+        return res.status(500).send(error)
     }
 })
 
@@ -85,7 +89,9 @@ adminRouter.post("/admin/login", async (req, res) => {
             password: req.body.password
         });
         if(error){
-            return res.status(400).json(error.details[0].message);
+            return res.status(400).json({
+                message: error.details[0].message
+            });
         }
 
     } catch(error){
@@ -99,7 +105,9 @@ adminRouter.post("/admin/login", async (req, res) => {
         })
 
         if(!attemptAdmin){
-            return res.status(404).send("Admin Not Found")
+            return res.status(404).json({
+                message: "Admin Not Found"
+            })
         }
         // console.log(attemptAdmin)
         // console.log(req.body.password)
@@ -111,7 +119,9 @@ adminRouter.post("/admin/login", async (req, res) => {
         )
 
         if(!validPass){
-            return res.status(401).send("Wrong Password")
+            return res.status(401).json({
+                message: "Wrong Password"
+            })
         }
 
         const loginToken = jsonwebtoken.sign(
@@ -124,17 +134,19 @@ adminRouter.post("/admin/login", async (req, res) => {
 
         res.cookie("login-token", loginToken)
 
-        return res.status(200).send("Successful Login")
+        return res.status(200).json({
+            message: "Successful Login"
+        })
     } catch(error) {
         console.log(error)
         console.log("Error while checking if Admin is registered")
     }
 
-    try {
+    // try {
 
-    } catch(error){
-
-    }
+    // } catch(error){
+    //     console.log(error)
+    // }
 })
 
 module.exports = adminRouter;

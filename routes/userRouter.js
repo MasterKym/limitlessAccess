@@ -18,7 +18,8 @@ userRouter.post("/addstudent", async (req, res) => {
             city: req.body.city
         });
         if(error){
-            return res.status(400).json(error.details[0].message);
+            return res.status(400).json({
+                message: error.details[0].message});
         }
     } catch(error){
         console.log("Validation Error")
@@ -35,7 +36,9 @@ userRouter.post("/addstudent", async (req, res) => {
       });
 
     if(userExist || phoneExist){
-        return res.status(409).json("The information you entered already exists");
+        return res.status(409).json({
+            message: "The information you entered already exists"
+        });
     }
     } catch(error){
         console.log("Error while checking if user already exists")
