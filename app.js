@@ -52,6 +52,9 @@ const userRouter = require('./routes/userRouter')
 app.use("", userRouter)
 const adminRouter = require('./routes/adminRouter')
 app.use("", adminRouter)
+app.get("/", (req, res)=> {
+    res.send("Home Here")
+})
 const PORT = process.env.PORT || 5000
 app.listen(
     PORT,
