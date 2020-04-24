@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Joi = require("@hapi/joi");
 
-const User = require('./models/User')
+const User = require('./models/Student')
 
 const connectToDb = () => {
     const dbURL = process.env.NODE_ENV === 'dev' ?

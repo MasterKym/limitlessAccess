@@ -1,15 +1,19 @@
 const express = require('express');
-const User = require('../models/User')
+const User = require('../models/Student')
+const multer = require('multer')
 
-const userValidationSchema = require('./validations/userValidationSchema')
+const userValidationSchema = require('./validations/studentValidationSchema')
 
 const userRouter = express.Router();
 
-userRouter.post("", async (req, res) => {
+userRouter.post("/addstudent", async (req, res) => {
     console.log(req.body)
     try{
         const { error, value } = userValidationSchema.validate({
-            name: req.body.name,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            studyNumber: req.body.studyNumber,
+            school: req.body.school,
             phone: req.body.phone,
             city: req.body.city
         });
@@ -24,22 +28,25 @@ userRouter.post("", async (req, res) => {
 
     try {
     const userExist = await User.findOne({
-        name: req.body.name
+        studyNumber: req.body.studyNumber
       });
     const phoneExist = await User.findOne({
         phone: req.body.phone
       });
 
     if(userExist || phoneExist){
-        return res.status(409).json("The information you entered already exist");
+        return res.status(409).json("The information you entered already exists");
     }
     } catch(error){
-        console.log("Error while checkinf if user already exists")
+        console.log("Error while checking if user already exists")
     }
   
     try {
         const user = new User({
-            name: req.body.name,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            studyNumber: req.body.studyNumber,
+            school: req.body.school,
             phone: req.body.phone,
             city: req.body.city
         })

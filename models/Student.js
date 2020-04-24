@@ -1,10 +1,31 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    name: {
+    
+  firstName: {
       type: String,
       required: true,
-      min: 3
+      min: 3,
+      max: 20
+    },
+
+    lastName: {
+      type: String,
+      required: true,
+      min: 3,
+      max: 20
+    },
+
+    studyNumber:{
+      type: String,
+      required: true,
+      max:12
+    },
+
+    school:{
+      type: String,
+      required: true,
+      max: 20
     },
     phone: {
       type: String,
@@ -24,4 +45,4 @@ const userSchema = new mongoose.Schema({
     }
   });
 
-module.exports = mongoose.model("User", userSchema)
+module.exports = mongoose.model("Student", userSchema)
