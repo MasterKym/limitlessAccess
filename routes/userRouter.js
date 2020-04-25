@@ -25,92 +25,117 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage: storage
-})
+}).array('studentCardPhotos', 2)
 
 
 userRouter.post("/addstudent",
 
     // First Callback: Multer Middleware
-    upload.array('studentCardPhotos', 2),
+    
     // Second Callback: Express middleware
     async (req, res) => {
-        
-        // console.log(req.body)
-
-        // Student Card Images Handler
-        const cardPhotos = []
-        for (photo of req.files){
-
-            const data = fs.readFileSync(path= photo.path)
-            const mimeType = photo.mimetype
-
-            cardPhotos.push({
-                data,
-                mimeType
-            })
-        }
-        console.log(cardPhotos)
-
-        try{
-            const { error, value } = userValidationSchema.validate({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                studyNumber: req.body.studyNumber,
-                school: req.body.school,
-                phone: req.body.phone,
-                city: req.body.city,
-
-                cardPhotos: cardPhotos
-
-            });
-            if(error){
+        upload(req, res, async (err) => {
+            if (err instanceof multer.MulterError) {
+            // A Multer error occurred when uploading.
+                console.log("Error " + err.message)
                 return res.status(400).json({
-                    message: error.details[0].message});
+                    error: err.message
+                })
+            } else if (err) {
+            // An unknown error occurred when uploading.
+            console.log(err)
+                return res.status(400).json({
+                    error: err
+                })
             }
-        } catch(error){
-            console.log("Validation Error")
-            console.log(error)
-        }
+             // Multer Upload went fine.
+            const cardPhotos = []
+
+            try {
+                for (photo of req.files){
+                    
+                    // Read Image
+                    const data = fs.readFileSync(path= photo.path)
+                    const mimeType = photo.mimetype
+
+                    cardPhotos.push({
+                        data,
+                        mimeType
+                    })
+                    // Delete Image
+                    fs.unlink(photo.path, (err) => {
+                        if (err) throw err;
+                        console.log(`successfully deleted ${photo.path}`);
+                        });
+                        
+                }
+            } catch (error) {   
+                console.log(error)
+            }
+            // console.log(cardPhotos)
+
+            try{
+                const { error, value } = userValidationSchema.validate({
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    studyNumber: req.body.studyNumber,
+                    school: req.body.school,
+                    phone: req.body.phone,
+                    city: req.body.city,
+
+                    cardPhotos: cardPhotos
+
+                });
+                if(error){
+                    return res.status(400).json({
+                        message: error.details[0].message});
+                }
+            } catch(error){
+                console.log("Validation Error")
+                console.log(error)
+            }
 
 
-        try {
-        const userExist = await User.findOne({
-            studyNumber: req.body.studyNumber
-        });
-        const phoneExist = await User.findOne({
-            phone: req.body.phone
-        });
+            try {
+                const userExist = await User.findOne({
+                    studyNumber: req.body.studyNumber
+                });
+                const phoneExist = await User.findOne({
+                    phone: req.body.phone
+                });
 
-        if(userExist || phoneExist){
-            return res.status(409).json({
-                message: "The information you entered already exists"
-            });
-        }
-        } catch(error){
-            console.log("Error while checking if user already exists")
-        }
+                // if(userExist || phoneExist){
+                //     return res.status(409).json({
+                //         message: "The information you entered already exists"
+                //     });
+                // }
+            } catch(error){
+                console.log("Error while checking if user already exists")
+            }
 
-        try {
-            const user = new User({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                studyNumber: req.body.studyNumber,
-                school: req.body.school,
-                phone: req.body.phone,
-                city: req.body.city,
+            try {
+                const user = new User({
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    studyNumber: req.body.studyNumber,
+                    school: req.body.school,
+                    phone: req.body.phone,
+                    city: req.body.city,
 
-                cardPhotos: cardPhotos
-            })
+                    cardPhotos: cardPhotos
+                })
 
-            // TODO: delete file from uploads folder.
-            console.log("Reached account creation in DB")
-            const savedUser = await user.save()
+                // TODO: delete file from uploads folder.
+                console.log("Reached account creation in DB")
+                const savedUser = await user.save()
 
-            return res.status(200).json(savedUser)
-        } catch(error){
-            console.log(error)
-            return res.status(500).send(error)
-        }
+                return res.status(200).json(savedUser)
+            } catch(error){
+                console.log(error)
+                return res.status(500).send(error)
+            }
+                })
+
 });
 
 
