@@ -16,7 +16,7 @@ const studentValidationSchema = Joi.object(
         city: Joi.string().max(40).required(),
         // cardFront: Joi.binary(), //TODO maybe add base64 encoding
         // cardBack: Joi.binary(), //TODO maybe add base64 encoding
-        cardPhotos: Joi.array().items(photoObject)
+        cardPhotos: Joi.array().items(photoObject).required()
     
     }
 )
