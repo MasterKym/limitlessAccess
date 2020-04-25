@@ -104,11 +104,11 @@ userRouter.post("/addstudent",
                     phone: req.body.phone
                 });
 
-                // if(userExist || phoneExist){
-                //     return res.status(409).json({
-                //         message: "The information you entered already exists"
-                //     });
-                // }
+                if(userExist || phoneExist){
+                    return res.status(409).json({
+                        message: "The information you entered already exists"
+                    });
+                }
             } catch(error){
                 console.log("Error while checking if user already exists")
             }
