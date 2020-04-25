@@ -81,6 +81,7 @@ userRouter.post("/addstudent",
                     studyNumber: req.body.studyNumber,
                     school: req.body.school,
                     phone: req.body.phone,
+                    phoneOperator: req.body.phoneOperator,
                     city: req.body.city,
 
                     cardPhotos: cardPhotos

@@ -34,6 +34,13 @@ const userSchema = new mongoose.Schema({
       min: 10,
       max: 10
     },
+
+    phoneOperator:{
+      type: String,
+      required: true,
+      max: 20
+    },
+
     city: {
       type: String,
       required: true,
