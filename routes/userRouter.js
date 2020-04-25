@@ -89,6 +89,7 @@ userRouter.post("/addstudent",
                 });
                 if(error){
                     return res.status(400).json({
+                        origin: "Joi/validate",
                         message: error.details[0].message});
                 }
             } catch(error){
@@ -121,9 +122,11 @@ userRouter.post("/addstudent",
                     studyNumber: req.body.studyNumber,
                     school: req.body.school,
                     phone: req.body.phone,
+                    phoneOperator: req.body.phoneOperator,
                     city: req.body.city,
-
                     cardPhotos: cardPhotos
+
+                    //
                 })
 
                 // TODO: delete file from uploads folder.
@@ -133,7 +136,10 @@ userRouter.post("/addstudent",
                 return res.status(200).json(savedUser)
             } catch(error){
                 console.log(error)
-                return res.status(500).send(error)
+                return res.status(500).json({
+                    origin: "Student creation and saving in DB",
+                    error: error.message
+                })
             }
                 })
 

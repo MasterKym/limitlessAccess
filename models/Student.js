@@ -61,10 +61,31 @@ const userSchema = new mongoose.Schema({
       }
     ],
 
+    // 
+    operations: [
+      {
+        value:{
+          type: Number,
+          required: true
+        },
+        time: {
+          type: Date,
+          default: Date.now,
+          required: true
+
+        },
+        // The admin who did the operation
+        by: {
+          type: String,
+          required: true
+        }
+      }
+    ],
     // Automatically generated fields
     date_created: {
       type: Date,
-      default: Date.now
+      default: Date.now,
+      required: true
     }
   });
 
