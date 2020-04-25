@@ -45,6 +45,7 @@ userRouter.post("/addstudent",
             // An unknown error occurred when uploading.
             console.log(err)
                 return res.status(400).json({
+                    message: "Unexpected Error",
                     error: err
                 })
             }
@@ -53,7 +54,6 @@ userRouter.post("/addstudent",
 
             try {
                 for (photo of req.files){
-                    
                     // Read Image
                     const data = fs.readFileSync(path= photo.path)
                     const mimeType = photo.mimetype
