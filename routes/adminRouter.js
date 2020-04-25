@@ -14,7 +14,7 @@ const Student = require('../models/Student')
 const adminRouter = express.Router();
 
 
-adminRouter.get("/admin",verifyLogin,  async (req, res) => {
+adminRouter.get("/admin/students",verifyLogin,  async (req, res) => {
     try{
         const students = await Student.find()
                                 .sort({_id:1})

@@ -132,7 +132,7 @@ userRouter.post("/addstudent",
                 // TODO: delete file from uploads folder.
                 console.log("Reached account creation in DB")
                 const savedUser = await user.save()
-
+                
                 return res.status(200).json(savedUser)
             } catch(error){
                 console.log(error)
