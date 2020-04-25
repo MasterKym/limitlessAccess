@@ -1,6 +1,11 @@
 const jwt = require("jsonwebtoken");
 
 function verifyLogin(req, res, next) {
+
+  if(process.env.NODE_ENV === 'dev'){
+    console.log("Proceeding without logging in...")
+    return next()
+  }
   console.log(req);
 
   const loginToken = req.cookies["login-token"];

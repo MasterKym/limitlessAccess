@@ -7,20 +7,22 @@ const adminRegisterValidationSchema = require('./validations/adminRegisterValida
 
 const adminLoginValidationSchema = require('./validations/adminLoginValidationSchema');
 const Admin = require('../models/Admin')
+const Student = require('../models/Student')
+
 
 
 const adminRouter = express.Router();
 
 
-adminRouter.get("/admin", verifyLogin, async (req, res) => {
+adminRouter.get("/admin",verifyLogin,  async (req, res) => {
     try{
-        const users = await User.find()
+        const students = await Student.find()
                                 .sort({_id:1})
-                                .skip(skip)
-                                .limit(limit)
+                                // .skip(skip)
+                                // .limit(limit)
 
-        if(users){
-            return res.status(200).json(users)
+        if(students){
+            return res.status(200).json(students)
         }
     } catch(error) {
         console.log(error)

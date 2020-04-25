@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const Joi = require("@hapi/joi");
 
 const User = require('./models/Student')
-
+if(process.env.NODE_ENV === 'dev'){
+    mongoose.set('debug', 'true')
+}
 const connectToDb = () => {
     const dbURL = process.env.NODE_ENV === 'dev' ?
                         process.env.localDB :

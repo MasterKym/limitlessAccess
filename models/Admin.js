@@ -21,6 +21,13 @@ const adminSchema = new mongoose.Schema({
       max: 40
     },
 
+    // Automatically generated fields
+    isSuper:{
+      type: Boolean,
+      required: true,
+      default: false
+    },
+
     date_created: {
       type: Date,
       default: Date.now
