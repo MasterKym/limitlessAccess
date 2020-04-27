@@ -176,7 +176,7 @@ Response example:
 
 ## POST /admin/students/operate
 |Field|Type|Conditions|Usage|
-|----------------|-------------------------------|-----------------------------|--|--|
+|----------------|-------------------------------|-----------------------------|--|
 |id|`string`|`limit.length === 24`|This is the student's id we wish to verify|
 |value|`string`|`value === 5 || 10 ||20`|This is the value of the operation we wish to mark as done|
 >Response example upon request success
