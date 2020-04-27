@@ -1,37 +1,37 @@
 const mongoose = require('mongoose');
 
 const adminSchema = new mongoose.Schema({
-    username: {
-      type: String,
-      required: true,
-      min: 6,
-      max: 20
-    },
-    
-    password:{
-        type:String,
-        required: true,
-        min: 6,
-        max: 255
-    },
+	username: {
+		type: String,
+		required: true,
+		min: 6,
+		max: 20,
+	},
 
-    city: {
-      type: String,
-      required: true,
-      max: 40
-    },
+	password: {
+		type: String,
+		required: true,
+		min: 6,
+		max: 255,
+	},
 
-    // Automatically generated fields
-    isSuper:{
-      type: Boolean,
-      required: true,
-      default: false
-    },
+	city: {
+		type: String,
+		required: true,
+		max: 40,
+	},
 
-    date_created: {
-      type: Date,
-      default: Date.now
-    }
-  });
+	// Automatically generated fields
+	isSuper: {
+		type: Boolean,
+		required: true,
+		default: false,
+	},
 
-module.exports = mongoose.model("Admin", adminSchema)
+	date_created: {
+		type: Date,
+		default: Date.now,
+	},
+});
+
+module.exports = mongoose.model('Admin', adminSchema);

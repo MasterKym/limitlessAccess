@@ -1,5 +1,6 @@
 const express = require('express');
 const verifyLogin = require('./verifyLogin');
+const isSuper = require('./isSuper');
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
 // const Joi = require('@hapi/joi');
@@ -15,7 +16,7 @@ const Student = require('../models/Student');
 const adminRouter = express.Router();
 
 // Routes related to Admin only
-adminRouter.post('/admin/register', async (req, res) => {
+adminRouter.post('/admin/register', verifyLogin, isSuper, async (req, res) => {
 	try {
 		const { error, value } = adminRegisterValidationSchema.validate({
 			username: req.body.username,
@@ -59,6 +60,7 @@ adminRouter.post('/admin/register', async (req, res) => {
 
 		return res.status(200).json({
 			username: savedAdmin.username,
+			isSuper: savedAdmin.isSuper,
 			city: savedAdmin.city,
 		});
 	} catch (error) {
@@ -112,6 +114,7 @@ adminRouter.post('/admin/login', async (req, res) => {
 			{
 				_id: attemptAdmin._id,
 				username: attemptAdmin.username,
+				isSuper: attemptAdmin.isSuper,
 			},
 			process.env.SECRET_JWT_TOKEN,
 			{ expiresIn: '6h' }
@@ -159,7 +162,7 @@ adminRouter.get('/admin/students', verifyLogin, async (req, res) => {
 			.sort({ 'operations.time': 1 })
 			.skip(skip)
 			.limit(limit)
-			.select('operations');
+			.select('-cardPhotos');
 
 		if (students) {
 			return res.status(200).json({

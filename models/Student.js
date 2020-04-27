@@ -89,7 +89,7 @@ const userSchema = new mongoose.Schema({
 	// Automatically generated fields
 	verified: {
 		type: Boolean,
-		default: false,
+		default: true,
 		requireD: true,
 	},
 
