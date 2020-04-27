@@ -134,7 +134,7 @@ Response example:
 
 ## POST admin/students/verify
 |Field|Type|Conditions|Usage|
-|----------------|-------------------------------|-----------------------------|--|--|
+|----------------|-------------------------------|-----------------------------|-|
 |id|`string`|`limit.length === 24`|This is the student's id we wish to verify|
 >Possible responses
 
