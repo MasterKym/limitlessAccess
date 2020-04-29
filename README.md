@@ -83,6 +83,18 @@ Possible responses:
 `< HTTP/1.1 200 OK`
 > Successful login
 
+>Successful response example
+
+    {
+      "message": "Successful Login",
+      "admin": {
+        "_id": "5ea7217bc2c1ef00179bac77",
+        "username": "admin001",
+        "isSuper": false
+      }
+    }
+
+
 ### POST /admin/register
 > This route is only available to superAdmin. SuperAdmin can create regular admin accounts.
 
