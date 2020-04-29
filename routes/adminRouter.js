@@ -122,10 +122,10 @@ adminRouter.post('/admin/login', async (req, res) => {
 
 		res.cookie('login-token', loginToken, {
 			httpOnly: true,
-			secure: true,
+			// secure: true,
 			expires: new Date(Date.now() + 6 * 60 * 60 * 1000),
 		});
-//		res.set('Authorization', 'Bearer ' + loginToken);
+		//		res.set('Authorization', 'Bearer ' + loginToken);
 
 		return res.status(200).json({
 			message: 'Successful Login',
@@ -181,6 +181,43 @@ adminRouter.get('/admin/students', verifyLogin, async (req, res) => {
 	} catch (error) {
 		console.log(error);
 		res.status(500).send(error);
+	}
+});
+
+adminRouter.get('/admin/students/:id', verifyLogin, async (req, res) => {
+	try {
+		const idQuery = req.params.id;
+
+		if (!idQuery || typeof idQuery != 'string') {
+			return res.status(400).json({
+				error: 'Invalid id',
+				message: 'Please provide a student id.',
+			});
+		}
+		if (idQuery.length != 24) {
+			return res.status(400).json({
+				error: 'Invalid id',
+				message: 'Invalid id length.',
+			});
+		}
+		const id = mongoose.Types.ObjectId(idQuery);
+		const student = await Student.findOne({ _id: id }, (err, doc, res) => {
+			if (err) {
+				console.log(err);
+				console.log(doc);
+			}
+		});
+		if (!student) {
+			return res.status(404).json({
+				message: 'Incorrect id. No student with this id',
+			});
+		}
+
+		return res.status(200).json({
+			student,
+		});
+	} catch (error) {
+		console.log(error);
 	}
 });
 
