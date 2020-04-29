@@ -148,7 +148,7 @@ adminRouter.post('/admin/login', async (req, res) => {
 });
 
 // Routes related to admin getting/modifying users
-adminRouter.get('/admin/students', verifyLogin, async (req, res) => {
+adminRouter.get('/admin/students', async (req, res) => {
 	console.log(res.locals.user);
 	console.log(req.query);
 
