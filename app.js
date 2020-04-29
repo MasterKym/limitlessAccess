@@ -2,10 +2,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
 const cookieParser = require('cookie-parser');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const User = require('./models/Student');
 
 const connectToDb = () => {
+	console.log(process.env.remoteDB)
 	const dbURL =
 		process.env.NODE_ENV === 'dev' ? process.env.localDB : process.env.remoteDB;
 	console.log('Db URL:', dbURL);
@@ -74,5 +77,5 @@ app.get('/', (req, res) => {
 });
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-	console.log('App listening..');
+	console.log('App listening..', PORT);
 });
