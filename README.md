@@ -34,6 +34,38 @@ example of response :
 	 },
 	 contentType: "image/png"
 	 }`
+	 
+### GET /admin/students/:id
+This route return a single student object.
+|Field|Type|Conditions|
+|----------------|-------------------------------|-----------------------------|
+|`:id`|`string`|`required` `length === 24`|
+
+> Response Example
+
+    {
+      "student": {
+        "verified": true,
+        "_id": "5ea36a235f66ca2a9f0e0d7b",
+        "firstName": "first1",
+        "lastName": "last1",
+        "studyNumber": "199999999",
+        "school": "hello",
+        "phone": "0620203043",
+        "city": "beni mellal",
+        "date_created": "2020-04-24T22:37:23.198Z",
+        "__v": 0,
+        "cardPhotos": [],
+        "operations": []
+      }
+    }
+>Possible responses
+
+`< HTTP/1.1 404 Not Found`
+> No student with that id.
+
+`< HTTP/1.1 401 Unauthorized`
+> Bad authentication. You need to send `login-token` cookie with the request
 
 ### POST /admin/login
 This is the route for admin login.
