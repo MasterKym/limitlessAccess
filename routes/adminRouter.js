@@ -126,6 +126,11 @@ adminRouter.post('/admin/login', async (req, res) => {
 
 		return res.status(200).json({
 			message: 'Successful Login',
+			admin: {
+				_id: attemptAdmin._id,
+				username: attemptAdmin.username,
+				isSuper: attemptAdmin.isSuper,
+			},
 		});
 	} catch (error) {
 		console.log(error);
