@@ -1,15 +1,16 @@
 const jwt = require('jsonwebtoken');
 
 function verifyLogin(req, res, next) {
-	// console.log(req.cookies);
+	 console.log(req.cookies);
 
 	const loginToken = req.cookies['login-token'];
-	if (!loginToken)
+	if (!loginToken) {
+		console.log('no login token')
 		return res.status(401).json({
 			error: 'Unauthorized',
 			message: 'You need to log in first!',
 		});
-
+	}
 	try {
 		const verified = jwt.verify(loginToken, process.env.SECRET_JWT_TOKEN);
 		res.locals.user = verified;
