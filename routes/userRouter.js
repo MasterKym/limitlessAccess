@@ -71,20 +71,20 @@ userRouter.post(
 				studyNumber: req.body.studyNumber,
 			});
 
-			// if (userExist) {
-			// 	return res.status(409).json({
-			// 		message: 'The information you entered already exists',
-			// 	});
-			// }
+			if (userExist) {
+				return res.status(409).json({
+					message: 'The information you entered already exists',
+				});
+			}
 			const phoneExist = await User.findOne({
 				phone: req.body.phone,
 			});
 
-			// if (phoneExist) {
-			// 	return res.status(409).json({
-			// 		message: 'The information you entered already exists',
-			// 	});
-			// }
+			if (phoneExist) {
+				return res.status(409).json({
+					message: 'The information you entered already exists',
+				});
+			}
 		} catch (error) {
 			console.log('Error while checking if user already exists');
 		}
