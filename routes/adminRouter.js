@@ -122,7 +122,7 @@ adminRouter.post('/admin/login', async (req, res) => {
 
 		res.cookie('login-token', loginToken, {
 			httpOnly: true,
-			// secure: true,
+			secure: true,
 			expires: new Date(Date.now() + 6 * 60 * 60 * 1000),
 		});
 		//		res.set('Authorization', 'Bearer ' + loginToken);
