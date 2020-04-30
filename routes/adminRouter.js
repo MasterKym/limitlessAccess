@@ -166,12 +166,22 @@ adminRouter.get('/admin/students', verifyLogin, async (req, res) => {
 	console.log(limit);
 	console.log(skip);
 
+	const verifiedQuery = req.query.verified;
+
+	let query = {};
+	if (verifiedQuery && verifiedQuery === 'true') {
+		query.verified = true;
+	} else if (verifiedQuery && verifiedQuery === 'false') {
+		query.verified = false;
+	}
+
 	try {
-		const students = await Student.find()
+		const students = await Student.find(query)
 			.sort({ 'operations.time': 1 })
 			.skip(skip)
 			.limit(limit)
-			.select('-cardPhotos');
+			// .select('-cardPhotos');
+			.select('verified');
 
 		if (students) {
 			return res.status(200).json({
