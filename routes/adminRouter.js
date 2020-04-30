@@ -3,6 +3,7 @@ const verifyLogin = require('./verifyLogin');
 const isSuper = require('./isSuper');
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
+const fs = require('fs');
 // const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
 
@@ -122,7 +123,7 @@ adminRouter.post('/admin/login', async (req, res) => {
 
 		res.cookie('login-token', loginToken, {
 			httpOnly: true,
-			secure: true,
+			secure: process.env.HTTPS === 'true',
 			expires: new Date(Date.now() + 6 * 60 * 60 * 1000),
 		});
 		//		res.set('Authorization', 'Bearer ' + loginToken);
@@ -218,6 +219,36 @@ adminRouter.get('/admin/students/:id', verifyLogin, async (req, res) => {
 		});
 	} catch (error) {
 		console.log(error);
+	}
+});
+
+adminRouter.get('/admin/userphoto', verifyLogin, async (req, res) => {
+	try {
+		// console.log(req.query.path);
+		const pathQuery = req.query.path;
+
+		if (!pathQuery || typeof pathQuery != 'string') {
+			return res.status(400).json({
+				error: 'Invalid id',
+				message: 'Please provide a student id.',
+			});
+		}
+
+		// console.log(photoPath);
+		if (!fs.existsSync(pathQuery)) {
+			// This looks to be starting from the root of the project.
+			// That is limitlessAccess/
+			return res.status(404).json({
+				error: 'Photo not found',
+				message: 'Please provide a valid photo path.',
+			});
+		}
+
+		return res.status(200).sendFile(pathQuery, { root: process.cwd() });
+	} catch (error) {
+		console.log(error);
+		res.status(500).end();
+		throw error;
 	}
 });
 

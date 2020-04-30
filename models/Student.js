@@ -49,8 +49,8 @@ const userSchema = new mongoose.Schema({
 	// student Card fields
 	cardPhotos: [
 		{
-			data: {
-				type: Buffer,
+			path: {
+				type: String,
 				required: true,
 			},
 			mimeType: {
@@ -89,8 +89,8 @@ const userSchema = new mongoose.Schema({
 	// Automatically generated fields
 	verified: {
 		type: Boolean,
-		default: true,
-		requireD: true,
+		default: false,
+		required: true,
 	},
 
 	date_created: {
