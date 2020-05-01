@@ -180,8 +180,8 @@ adminRouter.get('/admin/students', verifyLogin, async (req, res) => {
 			.sort({ 'operations.time': 1 })
 			.skip(skip)
 			.limit(limit)
-			// .select('-cardPhotos');
-			.select('verified');
+			.select('-cardPhotos');
+		// .select('verified');
 
 		if (students) {
 			return res.status(200).json({
