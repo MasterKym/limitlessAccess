@@ -35,8 +35,10 @@ const upload = multer({
 	limits: limits,
 	fileFilter: fileFilter,
 }).array('studentCardPhotos', 2);
+// .any();
 
 function multerMiddleware(req, res, next) {
+	// console.log(req.body.studentCardPhotos);
 	upload(req, res, (error) => {
 		if (error && error instanceof multer.MulterError) {
 			// A Multer error occurred when uploading.
