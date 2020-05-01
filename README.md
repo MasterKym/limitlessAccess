@@ -5,8 +5,9 @@ This repository exposes an express.js API.
 # Routes
 ## /admin
 > Requires authentication through request cookies. The API expects a cookie named `login-token` with the jsonwebtoken provided after login.
-### GET /admin/students
+### GET /admin/students?verified
 This route return an array of Student objects.
+You can filter verified students by supplying a `verified` query string. If not specified the API returns a mixed array.
 example of response : 
 
     `[
@@ -19,25 +20,14 @@ example of response :
         "city": "beni mellal",
         "date_created": "2020-04-24T12:58:03.022Z",
         "__v": 0,
-        "cardPhotos": [],
         "operations": []
       },
       ...]`
 
- `cardPhotos` will contain an array of objects structured like this :
-
-     `{
-     "_id: "kljbelkjbefol8998b",
-     data: {
-	     type: "Buffer",
-	     data: [137, 80, ....., 0]}
-	 },
-	 contentType: "image/png"
-	 }`
 	 
 ### GET /admin/students/:id
 This route return a single student object.
-|Field|Type|Conditions|
+|Query|Type|Conditions|
 |----------------|-------------------------------|-----------------------------|
 |`:id`|`string`|`required` `length === 24`|
 
@@ -59,6 +49,22 @@ This route return a single student object.
         "operations": []
       }
     }
+    
+ `cardPhotos` will contain an array of objects structured like this :
+
+      "cardPhotos": [
+        {
+          "_id": "5eabcba1fc82aa76415bb8bb",
+          "path": "uploads/sh-first1last12020-05-01T07:11:29.290Z.png",
+          "mimeType": "image/png"
+        },
+        {
+          "_id": "5eabcba1fc82aa76415bb8bc",
+          "path": "uploads/sh-first1last12020-05-01T07:11:29.292Z.png",
+          "mimeType": "image/jpeg"
+        }
+      ]
+
 >Possible responses
 
 `< HTTP/1.1 404 Not Found`
@@ -66,6 +72,14 @@ This route return a single student object.
 
 `< HTTP/1.1 401 Unauthorized`
 > Bad authentication. You need to send `login-token` cookie with the request
+
+### GET /admin/userphoto?path
+|Query|Type|Conditions|
+|----------------|-------------------------------|-----------------------------|
+|`:id`|`string`|`required`|
+
+> This route returns a png file
+
 
 ### POST /admin/login
 This is the route for admin login.
@@ -311,6 +325,7 @@ Possible responses:
 
 `< HTTP/1.1 200 OK`
 > Successful submission.
+
 
 
 
