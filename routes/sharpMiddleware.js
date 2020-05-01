@@ -16,7 +16,7 @@ const sharpMiddleware = async (req, res, next) => {
 			.then(() => {
 				res.locals.cardPhotos.push({
 					path: `uploads/sh-${photo.filename}.png`,
-					mimeType: photo.mimetype,
+					mimeType: 'image/png',
 				});
 				counter++;
 			})
