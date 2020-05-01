@@ -148,6 +148,12 @@ adminRouter.post('/admin/login', async (req, res) => {
 	// }
 });
 
+adminRouter.get('/admin/checklogin', verifyLogin, async (req, res) => {
+	return res.status(200).json({
+		admin: res.locals.user,
+	});
+});
+
 // Routes related to admin getting/modifying users
 adminRouter.get('/admin/students', verifyLogin, async (req, res) => {
 	console.log(res.locals.user);
