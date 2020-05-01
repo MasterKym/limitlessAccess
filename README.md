@@ -108,6 +108,31 @@ Possible responses:
       }
     }
 
+### GET /admin/checklogin
+Possible responses.
+
+`< HTTP/1.1 401 Unauthorized`
+> Admin is not logged in.
+
+`< HTTP/1.1 200 OK`
+> Admin is logged in.
+
+`< HTTP/1.1 400 Bad Request`
+> Invalid token. Admin is not logged in.
+
+>Successful response example
+
+    {
+      "admin": {
+        "_id": "5ea72561df35a61a40b083f2",
+        "username": "amine001",
+        "isSuper": true,
+        "iat": 1588329445,
+        "exp": 1588351045
+      }
+    }
+
+
 
 ### POST /admin/register
 > This route is only available to superAdmin. SuperAdmin can create regular admin accounts.
