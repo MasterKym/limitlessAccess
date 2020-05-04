@@ -169,20 +169,29 @@ adminRouter.get('/admin/students', verifyLogin, async (req, res) => {
 	const skip =
 		typeof skipQueryInt === 'number' && skipQueryInt > 0 ? skipQueryInt : 0;
 
-	console.log(limit);
-	console.log(skip);
+	// console.log(limit);
+	// console.log(skip);
 
 	const verifiedQuery = req.query.verified;
 
-	let query = {};
+	let options = {};
 	if (verifiedQuery && verifiedQuery === 'true') {
-		query.verified = true;
+		options.verified = true;
 	} else if (verifiedQuery && verifiedQuery === 'false') {
-		query.verified = false;
+		options.verified = false;
 	}
 
+	const queryStr = req.query.queryStr;
+
+	if (queryStr) {
+		options.$text = {
+			$search: `${queryStr}`,
+		};
+	}
+	console.log(options);
+
 	try {
-		const students = await Student.find(query)
+		const students = await Student.find(options)
 			.sort({ 'operations.time': 1 })
 			.skip(skip)
 			.limit(limit)

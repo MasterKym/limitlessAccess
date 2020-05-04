@@ -1,4 +1,6 @@
+// Mongoose and mongoose settings
 const mongoose = require('mongoose');
+mongoose.set('useCreateIndex', true);
 
 const userSchema = new mongoose.Schema({
 	// Personal info fields
@@ -99,5 +101,9 @@ const userSchema = new mongoose.Schema({
 		required: true,
 	},
 });
+
+const index = { firstName: 'text', lastName: 'text' };
+
+userSchema.index(index);
 
 module.exports = mongoose.model('Student', userSchema);
