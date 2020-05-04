@@ -1,5 +1,7 @@
 const multer = require('multer');
 
+// Setup multer to receive images in userRouter.post
+
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		cb(null, './uploads');
@@ -22,7 +24,12 @@ const fileFilter = (req, file, cb) => {
 	if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
 		cb(null, true);
 	} else {
-		cb(new Error('Unsupported file format'), false);
+		cb(
+			new Error(
+				`Format d'image non supporté, veuillez essayer un format PNG ou JPEG.`
+			),
+			false
+		);
 	}
 };
 
@@ -44,17 +51,25 @@ function multerMiddleware(req, res, next) {
 			// A Multer error occurred when uploading.
 			// console.log('Multer error', error);
 			return res.status(400).json({
-				message: error.message,
+				message:
+					error.message === 'File too large'
+						? `La taille de chaque image ne doit pas dépasser 5MB.`
+						: error.message,
 				field: error.field,
 			});
 		}
 		if (error) {
 			// An unknown error occurred when uploading.
-			console.log('Unknown error', error);
+			if (
+				(error.message = `Format d'image non supporté, veuillez essayer un format PNG ou JPEG`)
+			) {
+				return res.status(400).json({
+					message: error.message,
+				});
+			}
+
 			return res.status(500).json({
-				// message: error.message,
-				// field: error.field,
-				error,
+				message: error.message,
 			});
 		}
 		next();
