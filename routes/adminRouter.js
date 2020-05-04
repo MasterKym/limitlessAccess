@@ -360,10 +360,11 @@ adminRouter.post('/admin/students/operate', verifyLogin, async (req, res) => {
 			});
 		}
 		const value = parseInt(valueQuery);
-		if (value != 5 && value != 10 && value != 20) {
+		if (value % 5 != 0) {
 			return res.status(400).json({
 				error: 'Invalid operation value',
-				message: 'Please provide an operation value, either 5, 10 or 20',
+				message:
+					'Please provide an operation value, either 5, 10, 15, 20, 25, 30, 35, 40, 45 or 50',
 			});
 		}
 		const student = await Student.findOne({ _id: id }, (err, doc, res) => {
@@ -375,6 +376,12 @@ adminRouter.post('/admin/students/operate', verifyLogin, async (req, res) => {
 		if (!student) {
 			return res.status(404).json({
 				message: 'Incorrect id. No student with this id',
+			});
+		}
+
+		if (!student.verified) {
+			return res.status(401).json({
+				message: "You can't add operations for unverified students",
 			});
 		}
 		const by = {
