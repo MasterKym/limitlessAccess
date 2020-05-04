@@ -10,27 +10,6 @@ const userValidationSchema = require('./validations/studentValidationSchema');
 
 const userRouter = express.Router();
 
-// Setup multer to receive images in userRouter.post
-const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, './uploads');
-	},
-
-	filename: (req, file, cb) => {
-		// console.log("From multer")
-		// console.log(file)
-
-		cb(
-			null,
-			req.body.firstName +
-				req.body.lastName +
-				new Date().toISOString() +
-				'.' +
-				file.mimetype.split('/')[1]
-		);
-	},
-});
-
 userRouter.post(
 	'/addstudent',
 	multerMiddleware,
@@ -56,6 +35,7 @@ userRouter.post(
 				cardPhotos: cardPhotos,
 			});
 			if (error) {
+				console.log(error);
 				return res.status(400).json({
 					origin: 'Joi/validate',
 					message: error.details[0].message,
@@ -73,7 +53,7 @@ userRouter.post(
 
 			if (userExist) {
 				return res.status(409).json({
-					message: 'The information you entered already exists',
+					message: `Le numéro de téléphone ou le numéro apogée que vous avez entré existe déjà`,
 				});
 			}
 			const phoneExist = await User.findOne({
@@ -82,7 +62,8 @@ userRouter.post(
 
 			if (phoneExist) {
 				return res.status(409).json({
-					message: 'The information you entered already exists',
+					message:
+						'Le numéro de téléphone ou le numéro apogée que vous avez entré existe déjà',
 				});
 			}
 		} catch (error) {
