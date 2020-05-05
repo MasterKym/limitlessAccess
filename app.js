@@ -63,7 +63,7 @@ app.use('', (req, res, next) => {
 	const origin =
 		process.env.NODE_ENV === 'dev' ? req.headers.origin : frontendDomain;
 
-	res.header('Access-Control-Allow-Origin', frontendDomain); // update to match the domain you will make the request from
+	res.header('Access-Control-Allow-Origin', origin); // update to match the domain you will make the request from
 	res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
 
 	res.header('Access-Control-Allow-Credentials', true);
