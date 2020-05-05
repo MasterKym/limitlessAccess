@@ -127,7 +127,9 @@ adminRouter.post('/admin/login', async (req, res) => {
 			expires: new Date(Date.now() + 6 * 60 * 60 * 1000),
 
 			// sameSite
-			sameSite: true,
+//			sameSite: false,
+			sameSite: 'none',
+
 		});
 		//		res.set('Authorization', 'Bearer ' + loginToken);
 
